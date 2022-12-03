@@ -1,0 +1,104 @@
+<div class="container">
+  <div style="text-align: center; font-family: 'Times New Roman',serif; font-size: 20px">
+    <h1>Теоретичні дані розподілу</h1><br>
+
+    <hr>
+
+    <dfn><b>Взаємний розподіл</b>, також відомий як логарифмічно рівномірний розподіл, є безперервний розподіл
+      ймовірностей,
+      який визначається, як правосторонній і обмежений мінімальним та максимальним значеннями.<br> Чим більше відношення
+      максимального до мінімального значення, тим більше асиметричний вид набуває розподіл.</dfn><br><br>
+
+    <hr>
+
+    <h2>Характеристики взаємного розподілу</h2>
+    <table border="1" cellpadding="6" cellspacing="0" align="center">
+      <tr>
+        <td>Параметри</td>
+        <!--<td>0 < a < b, де a, b - дійсні числа</td>-->
+        <td><%= image_tag 'parameters.png', width: 170, height: 50, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+      </tr>
+      <tr>
+        <td>ФШІ(<i>функція щільності ймовірності</i>)</td>
+        <td><%= image_tag 'PDF.png', width: 50, height: 90, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+      </tr>
+      <tr>
+        <td>КФР(<i>кумулятивна функція розподілу</i>)</td>
+        <td><%= image_tag 'CDF.png', width: 50, height: 90, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+      </tr>
+      <tr>
+        <td>Математичне очікування</td>
+        <td><%= image_tag 'average.png', width: 50, height: 90, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+      </tr>
+      <tr>
+        <td>Мода</td>
+        <td>а</td>
+      </tr>
+      <tr>
+        <td>Медіана</td>
+        <td><%= image_tag 'median.png', width: 40, height: 40, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+      </tr>
+      <tr>
+        <td>Дисперсія</td>
+        <td><%= image_tag 'dispersion.png', width: 140, height: 90, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+      </tr>
+    </table>
+    <br>
+
+    <hr>
+
+    <h2>Інструкція по експлуатації програми</h2>
+
+    <hr>
+
+    <h5>У блоці <b>Вхідні дані</b> необхідно ввести характерні значення, які необхідні для коректного моделювання.</h5>
+    <h5>Обмеження для даних наведені у таблиці</h5>
+    <table border="1" cellpadding="6" cellspacing="0" align="center">
+      <tr>
+        <td><b>Параметр</b></td>
+        <td><b>Обмеження</b></td>
+      </tr>
+      <tr>
+        <td>Початок проміжку</td>
+        <td>Цілі значення (> 0 та < 2000)</td>
+      </tr>
+      <tr>
+        <td>Завершення проміжку</td>
+        <td>Цілі значення (> 0 та < 2000)</td>
+      </tr>
+      <tr>
+        <td>Кількість точок</td>
+        <td>Цілі значення (> 5 та < 10000000)</td>
+      </tr>
+      <tr>
+        <td>Кількість інтервалів розбиття</td>
+        <td>Цілі значення (> 5 та < 1000)</td>
+      </tr>
+    </table>
+    <br>
+
+    <hr>
+
+    <h5>У блоці <b>Функція щільності ймовірності розподілу</b> наводиться представлення функції щільності ймовірності в
+      лінійному графіку.<br>Функція щільності ймовірності – це функція, значення якої в будь-якій заданій вибірці (або
+      точці) у просторі вибірки (набір можливих значень, що приймаються випадковою величиною) можна інтерпретувати як
+      таке, що забезпечує відносну ймовірність того, що значення випадкової величини буде близько до цієї вибірки.</h5>
+    <br>
+
+    <hr>
+
+    <h5>У блоці <b>Статистична перевірка випадкових величин</b> наводиться характерне гістограмне представлення.<br>Звичайно,
+      необхідно навести, що для статистичної перевірки випадкових величин був використаний метод гістограм.<br> Якщо на одному графіку представити означені гістограми,
+      то візуальне порівняння гістограм дозволяє оцінити якість алгоритмів моделювання випадкової величини (був використаний метод Неймана).<br>
+      Роз'яснення отриманих даних наступне:
+      <ul>
+        <li>Зелена гістограма - апроксимація взаємного розподілу;</li>
+        <li>Синя та фіолетова гістограми одержані моделюванням випадковових значень та розрахунку статистичних оцінок
+          щільності ймовірності.
+        </li>
+      </ul>
+    </h5>
+
+    <hr>
+  </div>
+</div>

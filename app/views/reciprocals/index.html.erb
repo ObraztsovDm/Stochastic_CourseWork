@@ -1,0 +1,125 @@
+<p style="color: green"><%= notice %></p>
+
+<div style="font-family: 'Times New Roman',serif; font-size: 20px">
+  <h1>Вхідні
+    дані <%= image_tag 'ruby.jpg', width: 50, height: 50, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %>
+  </h1>
+
+  <hr>
+  <div style="text-align: center;">
+    <%= form_with model: @reciprocal do |form| %>
+      <div class="alert alert-info">
+        Початок проміжку:
+        <%= form.number_field :x, in: 0.0..1000.0, step: 0.5, :class => "form_control form-control-md" %>
+        Завершення проміжку:
+        <%= form.number_field :y, in: 0.0..1000.0, step: 0.5, :class => "form_control form-control-md" %><br><br>
+        Кількість точок:
+        <%= form.number_field :val_n, in: 5.0..10000000.0, step: 10, :class => "form_control form-control-md" %>
+        Кількість інтервалів розбиття:
+        <%= form.number_field :n_g, in: 5.0..1000.0, step: 5, :class => "form_control form-control-md" %><br><br>
+
+        <%= form.submit :class => "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+
+  <hr>
+
+  <h1>Функція щільності ймовірності
+    розподілу <%= image_tag 'ruby.jpg', width: 50, height: 50, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></h1>
+
+  <hr>
+
+  <div class="alert alert-primary">
+    <%= line_chart [
+                     {
+                       name: "PDF", type: 'line', data: @pdf
+                     }
+                   ],
+                   title: "Функція щільності ймовірності",
+                   colors: ['brown'],
+                   xtitle: "x",
+                   ytitle: "P(x)",
+                   download: { background: "#ffffff" }
+    %>
+  </div>
+
+  <hr>
+
+  <h1>Статистична перевірка випадкових
+    величин <%= image_tag 'ruby.jpg', width: 50, height: 50, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></h1>
+
+  <hr>
+
+  <div style="width: 1000px">
+
+  </div>
+  <div class="alert alert-success">
+    <%= column_chart [
+                       {
+                         name: "p_k", type: 'column', data: @p_k
+                       },
+                       {
+                         name: "pk*", type: 'column', data: @series_one
+                       },
+                       {
+                         name: "pk*2", type: 'column', data: @series_two
+                       }
+                     ],
+                     title: "Апроксимація закону розподілу ВВ",
+                     colors: ['green', 'blue', 'purple'],
+                     xtitle: "x",
+                     ytitle: "p(x)",
+                     download: { background: "#ffffff" }
+    %>
+  </div>
+
+  <hr>
+
+  <h1>Інтегральні
+    характеристики <%= image_tag 'ruby.jpg', width: 50, height: 50, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></h1>
+
+  <hr>
+  <div style="background: #DDDDF5">
+    <div style="text-align: center;">
+      <table border="1" cellpadding="6" cellspacing="0" align="center">
+        <tr>
+          <td><b>Інтегральні характеристики</b></td>
+          <td style="background: #008000"></td>
+          <td style="background: #0000FF"></td>
+          <td style="background: #800080"></td>
+        </tr>
+        <tr>
+          <td><b>Математичне очікування</b></td>
+          <td><%= @average.round(5) %></td>
+          <td><%= @average_series_one.round(5) %></td>
+          <td><%= @average_series_two.round(5) %></td>
+        </tr>
+        <tr>
+          <td><b>Дисперсія</b></td>
+          <td><%= @dispersion.round(5) %></td>
+          <td><%= @dispersion_series_one.round(5) %></td>
+          <td><%= @dispersion_series_two.round(5) %></td>
+        </tr>
+        <tr>
+          <td><b>Мода</b></td>
+          <td><%= @mode.round(5) %></td>
+          <td><%= @mode_series_one.round(5) %></td>
+          <td><%= @mode_series_two.round(5) %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!--<div id="reciprocals">
+  <%# @reciprocals.each do |reciprocal| %>
+<%#= render reciprocal %>
+    <p>
+      <%#= link_to "Show this reciprocal", reciprocal %>
+    </p>
+  <%# end %>
+</div>-->
+
+<!--
+<%#= link_to "New reciprocal", new_reciprocal_path %>-->
