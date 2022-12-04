@@ -1,8 +1,7 @@
 module NeymanModule
 
-  def reciprocal_neyman(x, alf, bet)
-    1 / (x * Math.log(bet / alf))
-    #(x ** (alf - 1)) * ((1 - x) ** (bet - 1))
+  def reciprocal(x, alf, bet)
+    1 / (x * Math.log(bet / alf)) # функція щільності ймовірності
   end
 
   def ran_rec_neyman(val_w, alf, bet, val_n)
@@ -10,30 +9,32 @@ module NeymanModule
 
     (0...val_n).each do
       while 1
+        # перший крок
         g_1 = rand
         g_2 = rand
+        # другий крок
         x = alf + (bet - alf) * g_1
         y = val_w * g_2
 
-        if reciprocal_neyman(x, alf, bet) > y
+        # третій крок
+        if reciprocal(x, alf, bet) > y
           result_mas << x
           break
         end
       end
     end
 
+    # результат
     result_mas
   end
 
   def result_neyman(val_n, alf, bet)
-    # розрахунок максимального значення W, розбитий інтервал 0,1 на N частин
     max = Float::MIN
     step = (bet - alf) / val_n
 
-    # alf - начало цикла; bet - конец; step - шаг
+    # розрахунок максимального значення W, розбитий інтервал 0,1 на N частин
     alf.step(bet, step) do |i|
-
-      temp = reciprocal_neyman(i, alf, bet)
+      temp = reciprocal(i, alf, bet)
 
       if temp > max
         max = temp
@@ -45,64 +46,75 @@ module NeymanModule
 end
 
 module MetropolisModule
+  include NeymanModule
 
-  def beta_metropolis(x, alf, bet)
-    1 / (x * Math.log(bet / alf))
-  end
+  def ran_rec_metropolis(alf, bet, val_n)
+    result = []
+    x_0 = alf + (bet - alf) * rand
 
-  def ran_bet_metropolis(del, x_0, alf, bet)
-    x = x_0 + (-1 + 2 * rand) * del
+    del = (bet - alf) / 3.0
 
-    if x > alf and x < bet
-      a = beta_metropolis(x, alf, bet) / beta_metropolis(x_0, alf, bet)
-    else
-      a = 0
+    (0...val_n).each do
+      x = x_0 + (-1 + 2 * rand) * del
+
+      if x > alf and x < bet
+        a = reciprocal(x, alf, bet) / reciprocal(x_0, alf, bet)
+      else
+        a = 0
+      end
+
+      if a >= 1
+        x_0 = x
+      elsif rand < a
+        x_0 = x
+      end
+
+      result << x_0
     end
 
-    if a >= bet
-      x_0 = x
-    elsif rand < a
-      x_0 = x
-    end
-
-    x_0
+    result
   end
 
-  def result_metropolis(del, x_0, alf, bet, val_n)
+=begin
+  def result_metropolis(alf, bet, val_n)
     step = (bet - alf) / val_n
 
     alf.step(bet, step) do
-      ran_bet_metropolis(del, x_0, alf, bet)
+      ran_rec_metropolis(alf, bet, val_n)
     end
 
-    ran_bet_metropolis(del, x_0, alf, bet)
+    ran_rec_metropolis(alf, bet, val_n)
+  end
+=end
+end
+
+module ReverseModule
+  include NeymanModule
+
+  def func_reverse(alf, bet)
+    alf * ((bet / alf) ** rand) # (ln(x) - ln(a)) / (ln(b) - ln(a)) = y; x = a * ((b / a)^y)
+  end
+
+  def result_reverse(alf, bet, val_n)
+    result = []
+
+    (0...val_n).each do
+      while 1
+        temp = func_reverse(alf, bet)
+        if temp > alf and temp < bet
+          result << temp
+          break
+        end
+      end
+    end
+
+    result
   end
 end
 
 module DiagramsInfoModule
   include NeymanModule
-
-=begin
-  def rectangle_integration(alf, bet, n_g)
-    sum_func = 0
-    step = (bet - alf) / n_g
-    (alf..bet).step(step) { |temp|
-      sum_func += reciprocal_neyman(temp, alf, bet)
-    }
-
-    sum_func
-  end
-
-  def calculate_rectangle(alf, bet, n_g, sum_func)
-    (bet - alf) * (sum_func / n_g)
-  end
-
-  def result_integration(alf, bet, n_g)
-    temp = rectangle_integration(alf, bet, n_g)
-
-    calculate_rectangle(alf, bet, n_g, temp)
-  end
-=end
+  include MetropolisModule
 
   def dispersion(alf, bet)
     (((bet ** 2) - (alf ** 2)) / (2 * Math.log(bet / alf))) - (((bet - alf) / Math.log(bet / alf)) ** 2)
@@ -133,7 +145,7 @@ module DiagramsInfoModule
     }
   end
 
-  def calculation_pk_frequency(alf, bet, n_g, neyman_res)
+  def calculation_pk_frequency(alf, bet, n_g, res_method)
     result_frequency = []
     step = (bet - alf) / n_g
 
@@ -144,13 +156,13 @@ module DiagramsInfoModule
         break
       end
 
-      neyman_res.each do |point|
+      res_method.each do |point|
         if point > i and point < i + step
           v_k += 1
         end
       end
 
-      result_frequency << v_k / neyman_res.length.to_f
+      result_frequency << v_k / res_method.length.to_f
     end
 
     result_frequency
@@ -177,6 +189,7 @@ end
 
 module VisualizationModule
   include NeymanModule
+  include MetropolisModule
   include DiagramsInfoModule
 
   def method_pdf(alf, bet, val_n)
@@ -185,7 +198,7 @@ module VisualizationModule
 
     alf.step(bet, step) do |i|
       x = i
-      y = reciprocal_neyman(x, alf, bet)
+      y = reciprocal(x, alf, bet)
 
       result << [x, y]
     end
@@ -232,20 +245,12 @@ module VisualizationModule
 
     result
   end
-
-  def result_mode(result_param)
-    temp = result_param[0]
-    result_param.each do |i|
-      if temp < i
-        temp = i
-      end
-    end
-
-    temp
-  end
 end
 
 module ResultModule
+  include NeymanModule
+  include MetropolisModule
+  include ReverseModule
 
   # математичне очікування
   def result_average(alf, bet)
@@ -299,5 +304,30 @@ module ResultModule
     average_square = result_average_series(result_param) ** 2
 
     average_var_squared - average_square
+  end
+
+  def helper_result(alf, bet, val_n, n_g)
+    helper_result_methods = {
+      :neyman_for_first => result_neyman(val_n, alf, bet),
+      :neyman_for_second => result_neyman(val_n, alf, bet),
+      :metropolis_for_first => ran_rec_metropolis(alf, bet, val_n),
+      :metropolis_for_second => ran_rec_metropolis(alf, bet, val_n),
+      :reverse_for_first => result_reverse(alf, bet, val_n),
+      :reverse_for_second => result_reverse(alf, bet, val_n)
+    }
+
+    helper_result_frequency = {
+      :frequency_one_neyman => calculation_pk_frequency(alf, bet, n_g, helper_result_methods.dig(:neyman_for_first)),
+      :frequency_two_neyman => calculation_pk_frequency(alf, bet, n_g, helper_result_methods.dig(:neyman_for_second)),
+      :frequency_one_metropolis => calculation_pk_frequency(alf, bet, n_g, helper_result_methods.dig(:metropolis_for_first)),
+      :frequency_two_metropolis => calculation_pk_frequency(alf, bet, n_g, helper_result_methods.dig(:metropolis_for_second)),
+      :frequency_one_reverse => calculation_pk_frequency(alf, bet, n_g, helper_result_methods.dig(:reverse_for_first)),
+      :frequency_two_reverse => calculation_pk_frequency(alf, bet, n_g, helper_result_methods.dig(:reverse_for_second))
+    }
+
+    {
+      :methods => helper_result_methods,
+      :frequencies => helper_result_frequency
+    }
   end
 end

@@ -4,4 +4,3 @@ import "controllers"
 
 import "chartkick"
 import "Chart.bundle"
-

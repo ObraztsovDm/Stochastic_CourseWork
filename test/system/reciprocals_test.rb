@@ -14,6 +14,8 @@ class ReciprocalsTest < ApplicationSystemTestCase
     visit reciprocals_url
     click_on "New reciprocal"
 
+    fill_in "N g", with: @reciprocal.n_g
+    fill_in "Val n", with: @reciprocal.val_n
     fill_in "X", with: @reciprocal.x
     fill_in "Y", with: @reciprocal.y
     click_on "Create Reciprocal"
@@ -26,6 +28,8 @@ class ReciprocalsTest < ApplicationSystemTestCase
     visit reciprocal_url(@reciprocal)
     click_on "Edit this reciprocal", match: :first
 
+    fill_in "N g", with: @reciprocal.n_g
+    fill_in "Val n", with: @reciprocal.val_n
     fill_in "X", with: @reciprocal.x
     fill_in "Y", with: @reciprocal.y
     click_on "Update Reciprocal"

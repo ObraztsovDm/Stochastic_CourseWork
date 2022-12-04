@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="application.css">
 <p style="color: green"><%= notice %></p>
 
 <div style="font-family: 'Times New Roman',serif; font-size: 20px">
@@ -6,19 +7,20 @@
   </h1>
 
   <hr>
+
   <div style="text-align: center;">
-    <%= form_with model: @reciprocal do |form| %>
+    <%= form_for :reciprocal, url: reciprocals_path do |form| %>
       <div class="alert alert-info">
         Початок проміжку:
-        <%= form.number_field :x, in: 0.0..1000.0, step: 0.5, :class => "form_control form-control-md" %>
+        <%= form.number_field :x, in: 0.0..1000.0, step: 1, :class => "form_control form-control-md", :id => "x"%>
         Завершення проміжку:
-        <%= form.number_field :y, in: 0.0..1000.0, step: 0.5, :class => "form_control form-control-md" %><br><br>
+        <%= form.number_field :y, in: 0.0..1000.0, step: 1, :class => "form_control form-control-md", :id => "y"%><br><br>
         Кількість точок:
-        <%= form.number_field :val_n, in: 5.0..10000000.0, step: 10, :class => "form_control form-control-md" %>
+        <%= form.number_field :val_n, in: 5.0..10000000.0, step: 1, :class => "form_control form-control-md" %>
         Кількість інтервалів розбиття:
-        <%= form.number_field :n_g, in: 5.0..1000.0, step: 5, :class => "form_control form-control-md" %><br><br>
+        <%= form.number_field :n_g, in: 5.0..1000.0, step: 1, :class => "form_control form-control-md" %><br><br>
 
-        <%= form.submit :class => "btn btn-success" %>
+        <%= form.submit "Зберегти", :class => "btn btn-success" %>
       </div>
     <% end %>
   </div>
@@ -33,7 +35,7 @@
   <div class="alert alert-primary">
     <%= line_chart [
                      {
-                       name: "PDF", type: 'line', data: @pdf
+                       name: "ФШІ", type: 'line', data: @pdf
                      }
                    ],
                    title: "Функція щільності ймовірності",
@@ -51,22 +53,72 @@
 
   <hr>
 
-  <div style="width: 1000px">
+  <h4>Використання методу Неймана</h4>
 
-  </div>
+  <hr>
   <div class="alert alert-success">
     <%= column_chart [
                        {
-                         name: "p_k", type: 'column', data: @p_k
+                         name: "Апроксимація взаємного розподілу", type: 'column', data: @p_k
                        },
                        {
-                         name: "pk*", type: 'column', data: @series_one
+                         name: "Перша серія моделювання", type: 'column', data: @series_one_neyman
                        },
                        {
-                         name: "pk*2", type: 'column', data: @series_two
+                         name: "Друга серія моделювання", type: 'column', data: @series_two_neyman
                        }
                      ],
-                     title: "Апроксимація закону розподілу ВВ",
+                     title: "Статистична перевірка випадкових величин (Метод Неймана)",
+                     colors: ['green', 'blue', 'purple'],
+                     xtitle: "x",
+                     ytitle: "p(x)",
+                     download: { background: "#ffffff" }
+    %>
+  </div>
+
+  <hr>
+
+  <h4>Використання методу Метрополісу</h4>
+
+  <hr>
+  <div class="alert alert-success">
+    <%= column_chart [
+                       {
+                         name: "Апроксимація взаємного розподілу", type: 'column', data: @p_k
+                       },
+                       {
+                         name: "Перша серія моделювання", type: 'column', data: @series_one_metropolis
+                       },
+                       {
+                         name: "Друга серія моделювання", type: 'column', data: @series_two_metropolis
+                       }
+                     ],
+                     title: "Статистична перевірка випадкових величин (Метод Метрополісу)",
+                     colors: ['green', 'blue', 'purple'],
+                     xtitle: "x",
+                     ytitle: "p(x)",
+                     download: { background: "#ffffff" }
+    %>
+  </div>
+
+  <hr>
+
+  <h4>Використання методу зворотної функції</h4>
+
+  <hr>
+  <div class="alert alert-success">
+    <%= column_chart [
+                       {
+                         name: "Апроксимація взаємного розподілу", type: 'column', data: @p_k
+                       },
+                       {
+                         name: "Перша серія моделювання", type: 'column', data: @series_one_reverse
+                       },
+                       {
+                         name: "Друга серія моделювання", type: 'column', data: @series_two_reverse
+                       }
+                     ],
+                     title: "Статистична перевірка випадкових величин (Метод зворотної функції)",
                      colors: ['green', 'blue', 'purple'],
                      xtitle: "x",
                      ytitle: "p(x)",
@@ -84,42 +136,74 @@
     <div style="text-align: center;">
       <table border="1" cellpadding="6" cellspacing="0" align="center">
         <tr>
+          <td colspan="2">&nbsp;</td>
+          <td colspan="2"><b>Метод Неймана</b></td>
+          <td colspan="2"><b>Метод Метрополіса</b></td>
+          <td colspan="2"><b>Метод зворотної функції</b></td>
+        </tr>
+        <tr>
           <td><b>Інтегральні характеристики</b></td>
           <td style="background: #008000"></td>
+          <td style="background: #0000FF"></td>
+          <td style="background: #800080"></td>
+          <td style="background: #0000FF"></td>
+          <td style="background: #800080"></td>
           <td style="background: #0000FF"></td>
           <td style="background: #800080"></td>
         </tr>
         <tr>
           <td><b>Математичне очікування</b></td>
           <td><%= @average.round(5) %></td>
-          <td><%= @average_series_one.round(5) %></td>
-          <td><%= @average_series_two.round(5) %></td>
+          <td><%= @average_series_one_neyman.round(5) %></td>
+          <td><%= @average_series_two_neyman.round(5) %></td>
+          <td><%= @average_series_one_metropolis.round(5) %></td>
+          <td><%= @average_series_two_metropolis.round(5) %></td>
+          <td><%= @average_series_one_reverse.round(5) %></td>
+          <td><%= @average_series_two_reverse.round(5) %></td>
         </tr>
         <tr>
           <td><b>Дисперсія</b></td>
           <td><%= @dispersion.round(5) %></td>
-          <td><%= @dispersion_series_one.round(5) %></td>
-          <td><%= @dispersion_series_two.round(5) %></td>
+          <td><%= @dispersion_series_one_neyman.round(5) %></td>
+          <td><%= @dispersion_series_two_neyman.round(5) %></td>
+          <td><%= @dispersion_series_one_met.round(5) %></td>
+          <td><%= @dispersion_series_two_met.round(5) %></td>
+          <td><%= @dispersion_series_one_reverse.round(5) %></td>
+          <td><%= @dispersion_series_two_reverse.round(5) %></td>
         </tr>
         <tr>
           <td><b>Мода</b></td>
           <td><%= @mode.round(5) %></td>
-          <td><%= @mode_series_one.round(5) %></td>
-          <td><%= @mode_series_two.round(5) %></td>
+          <td><%= @mode_series_one_neyman.round(5) %></td>
+          <td><%= @mode_series_two_neyman.round(5) %></td>
+          <td><%= @mode_series_one_metropolis.round(5) %></td>
+          <td><%= @mode_series_two_metropolis.round(5) %></td>
+          <td><%= @mode_series_one_reverse.round(5) %></td>
+          <td><%= @mode_series_two_reverse.round(5) %></td>
         </tr>
       </table>
     </div>
   </div>
   <hr>
 </div>
+
 <!--<div id="reciprocals">
   <%# @reciprocals.each do |reciprocal| %>
-<%#= render reciprocal %>
+    <%#= render reciprocal %>
     <p>
       <%#= link_to "Show this reciprocal", reciprocal %>
     </p>
   <%# end %>
 </div>-->
 
-<!--
-<%#= link_to "New reciprocal", new_reciprocal_path %>-->
+
+<%#= link_to "New reciprocal", new_reciprocal_path %>
+
+<script>
+    document.getElementById("x").addEventListener('change', function () {
+        let x = document.getElementById("x");
+        let y = document.getElementById("y")
+
+        y.min = +x.value;
+    });
+</script>

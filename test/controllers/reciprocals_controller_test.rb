@@ -17,7 +17,7 @@ class ReciprocalsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create reciprocal" do
     assert_difference("Reciprocal.count") do
-      post reciprocals_url, params: { reciprocal: { x: @reciprocal.x, y: @reciprocal.y } }
+      post reciprocals_url, params: { reciprocal: { n_g: @reciprocal.n_g, val_n: @reciprocal.val_n, x: @reciprocal.x, y: @reciprocal.y } }
     end
 
     assert_redirected_to reciprocal_url(Reciprocal.last)
@@ -34,7 +34,7 @@ class ReciprocalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update reciprocal" do
-    patch reciprocal_url(@reciprocal), params: { reciprocal: { x: @reciprocal.x, y: @reciprocal.y } }
+    patch reciprocal_url(@reciprocal), params: { reciprocal: { n_g: @reciprocal.n_g, val_n: @reciprocal.val_n, x: @reciprocal.x, y: @reciprocal.y } }
     assert_redirected_to reciprocal_url(@reciprocal)
   end
 
