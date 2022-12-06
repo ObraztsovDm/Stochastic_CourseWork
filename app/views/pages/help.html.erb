@@ -45,9 +45,13 @@
       </tr>
       <tr>
         <td>Дисперсія</td>
-        <td><%= image_tag 'dispersion.png', width: 140, height: 90, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
+        <td><%= image_tag 'dispersion.png', width: 150, height: 90, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></td>
       </tr>
     </table>
+    <br>
+
+    <h2>Графік функції щільності ймовірності для взаємного розподілу</h2>
+    <p><%= image_tag 'PDF-img.png', width: 400, height: 350, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></p>
     <br>
 
     <hr>
@@ -61,10 +65,10 @@
 
     <h4>Блок <b>Вхідні дані</b></h4>
 
-      <hr>
+    <hr>
 
     <p><%= image_tag 'input-data.png', width: 1300, height: 300, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></p>
-      <h4>У цьому блоці необхідно ввести характерні значення, які необхідні для коректного моделювання</h4>
+    <h4>У цьому блоці необхідно ввести характерні значення, які необхідні для коректного моделювання</h4>
     <p><%= image_tag 'input-data-2.png', width: 1300, height: 300, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %></p>
 
 
@@ -96,9 +100,11 @@
       Якщо дані не було введено повністю и коректно, попередження про це не змусить себе довго чекати.<br><br>
       Приклад сповіщення у процесі введення даних:
       <%= image_tag 'input-data-warning.png', width: 1300, height: 300, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %>
+      <br><br>Приклад сповіщення після введення некоретного діапазону значень:
+      <%= image_tag 'input-data-warning-3.png', width: 1300, height: 300, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %>
       <br><br>Приклад сповіщення після зберігання даних:
       <%= image_tag 'input-data-warning-2.png', width: 1300, height: 300, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %>
-      Після коректного введення всіх даних, можна перейти до результатів моделювання
+      <br><br>Після коректного введення всіх даних, можна перейти до результатів моделювання
       <%= image_tag 'input-data-3.png', width: 1300, height: 300, style: "vertical-align:middle; -aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline" %>
     </h4>
 
@@ -146,7 +152,7 @@
       необхідно навести, що для статистичної перевірки випадкових величин був використаний метод гістограм.<br> Якщо
       на
       одному графіку представити означені гістограми,
-      то візуальне порівняння гістограм дозволяє оцінити якість алгоритмів моделювання випадкової величини (був
+      то візуальне порівняння гістограм дозволяє оцінити коректність алгоритмів моделювання випадкової величини (був
       використаний метод Неймана).<br>
       Роз'яснення отриманих даних наступне:
       <ul>
@@ -186,7 +192,8 @@
     <hr>
 
     <h5> У цьому блоці наведені характерні інтегральні характеристики випадкової величини
-      відповідні теоретичним значенням (зелений стовпчик) і значенням, отриманим в результаті статистичного аналізу результатів розрахунку (синій та фіолетовий стовпчик).
+      відповідні теоретичним значенням (зелений стовпчик) і значенням, отриманим в результаті статистичного аналізу
+      результатів розрахунку (синій та фіолетовий стовпчик).
       На рисунку нижче наведений приклад інтегральних характеристик випадкової величини на основі наступних даних:
     </h5>
     <table border="1" cellpadding="6" cellspacing="0" align="center">

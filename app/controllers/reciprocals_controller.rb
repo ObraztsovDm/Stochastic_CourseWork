@@ -40,7 +40,7 @@ class ReciprocalsController < ApplicationController
     @series_two_reverse = series_visual(alf, bet, n_g, helper_frequencies.dig(:frequency_two_reverse))
 
     @average = result_average(alf, bet)
-    @mode = result_mode(alf)
+    @mode = alf
     @dispersion = result_dispersion(alf, bet)
 
     @average_series_one_neyman = result_average_series(helper_methods.dig(:neyman_for_first))

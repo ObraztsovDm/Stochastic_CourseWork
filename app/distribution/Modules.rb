@@ -32,7 +32,7 @@ module NeymanModule
     max = Float::MIN
     step = (bet - alf) / val_n
 
-    # розрахунок максимального значення W, розбитий інтервал 0,1 на N частин
+    # розрахунок максимального значення W
     alf.step(bet, step) do |i|
       temp = reciprocal(i, alf, bet)
 
@@ -50,42 +50,37 @@ module MetropolisModule
 
   def ran_rec_metropolis(alf, bet, val_n)
     result = []
+
+    # випадкове значення x_0 з якого стартує алгоритм
     x_0 = alf + (bet - alf) * rand
 
     del = (bet - alf) / 3.0
 
     (0...val_n).each do
+      # випадкове значення x
       x = x_0 + (-1 + 2 * rand) * del
 
-      if x > alf and x < bet
+      # визначення а
+      if x >= alf and x <= bet
         a = reciprocal(x, alf, bet) / reciprocal(x_0, alf, bet)
       else
         a = 0
       end
 
-      if a >= 1
+      # обирання випадкового значення x_0
+      if a > 1
         x_0 = x
       elsif rand < a
         x_0 = x
       end
 
+      # запис знечень до масиву
       result << x_0
     end
 
+    # результат
     result
   end
-
-=begin
-  def result_metropolis(alf, bet, val_n)
-    step = (bet - alf) / val_n
-
-    alf.step(bet, step) do
-      ran_rec_metropolis(alf, bet, val_n)
-    end
-
-    ran_rec_metropolis(alf, bet, val_n)
-  end
-=end
 end
 
 module ReverseModule
@@ -101,7 +96,9 @@ module ReverseModule
     (0...val_n).each do
       while 1
         temp = func_reverse(alf, bet)
-        if temp > alf and temp < bet
+
+        # перевірка потряпляння в проміжок
+        if temp >= alf and temp <= bet
           result << temp
           break
         end
@@ -257,11 +254,6 @@ module ResultModule
     (bet - alf) / Math.log(bet / alf)
   end
 
-  # мода
-  def result_mode(alf)
-    alf
-  end
-
   # дисперсія
   def result_dispersion(alf, bet)
     (((bet ** 2) - (alf ** 2)) / (2 * Math.log(bet / alf))) - (((bet - alf) / Math.log(bet / alf)) ** 2)
@@ -279,6 +271,7 @@ module ResultModule
   end
 
   # мода для серій
+=begin
   def result_mode_series(result_param)
     temp = result_param[0]
 
@@ -289,6 +282,19 @@ module ResultModule
     end
 
     temp
+  end
+=end
+
+  def result_mode_series(result_param)
+    result = {}
+
+    result_param.each do |word|
+      result[word.round(3)] ||= 0
+      result[word.round(3)] += 1
+    end
+    temp = result.size - 1
+
+    result.sort_by { |key, value| value }[temp][0]
   end
 
   # дисперсія для серій

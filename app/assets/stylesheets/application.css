@@ -16,10 +16,10 @@
 table {
     border: 1px solid #000;
     width: 500px;
-    height: 500px;
+    height: 400px;
     box-sizing: border-box;
     border-collapse: collapse;
-    margin: 50px auto;
+    margin: 0 auto;
 }
 tr {
     border: 1px solid #000;
